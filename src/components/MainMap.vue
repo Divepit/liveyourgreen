@@ -1,5 +1,6 @@
 <template>
   <div style="height: 100%; width: 100%">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@2.6.0/assets/css/leaflet.css">
     <div style="height: 100%; width: 100%;">
       <l-map
           v-if="showMap"
@@ -13,12 +14,12 @@
       >
         <l-tile-layer
             :url="url"
-            :attribution="attribution"/>
+            :attribution="attribution"
+        />
         <l-marker
             :lat-lng="marker"
-            @click="removeMarker()"
-            :icon="icon"></l-marker
-        >
+            @click="removeMarker()">
+        </l-marker>
         <l-control
             :position="'topright'"
             class="ma-4"
@@ -30,6 +31,13 @@
               :marker="marker"
           />
         </l-control>
+        <l-control
+            :position="'topright'"
+            class="ma-4"
+        >
+          <v-geosearch :options="geosearchOptions" @click="this.marker = this.center"></v-geosearch>
+        </l-control>
+        <v-geosearch :options="geosearchOptions" ></v-geosearch>
       </l-map>
     </div>
   </div>
@@ -39,8 +47,17 @@
 //sparkline
 import ScoreCard from "@/components/ScoreCard";
 import {icon, latLng} from 'leaflet';
+import { Icon } from 'leaflet';
 import {LControl, LMap, LMarker, LTileLayer} from 'vue2-leaflet';
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import VGeosearch from 'vue2-leaflet-geosearch';
 
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 const exhale = ms =>
     new Promise(resolve => setTimeout(resolve, ms))
 
@@ -52,9 +69,15 @@ export default {
     LTileLayer,
     LMarker,
     LControl,
+    VGeosearch
   },
   data() {
     return {
+      geosearchOptions: { // Important part Here
+        provider: new OpenStreetMapProvider(),
+        autoClose: true,
+        keepResult: true
+      },
       zoom: 13,
       center: latLng(47.37, 8.54),
       marker: latLng(47.37, 8.54),
