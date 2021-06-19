@@ -16,7 +16,6 @@
             :attribution="attribution"
         />
         <l-marker :lat-lng="marker" @click="removeMarker()" :icon="icon"></l-marker>
-        <l-image-overlay :url="../assets/" :bounds="bounds"></l-image-overlay>
         <l-control :position="'topright'" class="ma-4">
           <v-card class="mx-auto" color="grey lighten-4" max-width="600">
             <v-card-title>
@@ -44,7 +43,6 @@
             </v-sheet>
           </v-card>
         </l-control>
-        <l-geo-json :geojson="geojson"></l-geo-json>
       </l-map>
     </div>
   </div>
@@ -56,7 +54,7 @@ const exhale = ms =>
     new Promise(resolve => setTimeout(resolve, ms))
 import { latLng, icon } from 'leaflet';
 import {
-  LMap, LTileLayer, LMarker, LControl, //LGeoJson
+  LMap, LTileLayer, LMarker, LControl
 } from 'vue2-leaflet';
 export default {
   name: 'Example',
@@ -65,7 +63,6 @@ export default {
     LTileLayer,
     LMarker,
     LControl,
-    // LGeoJson
   },
   data() {
     return {
@@ -87,7 +84,6 @@ export default {
         iconSize: [32, 32],
         iconAnchor: [16, 37]
       }),
-      geojson: null,
       //sparkline
       checking: false,
       heartbeats: [],
