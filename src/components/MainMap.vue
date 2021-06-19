@@ -75,8 +75,9 @@ export default {
     return {
       geosearchOptions: { // Important part Here
         provider: new OpenStreetMapProvider(),
+        //style: 'bar',
         autoClose: true,
-        keepResult: true
+        //keepResult: true
       },
       zoom: 13,
       center: latLng(47.37, 8.54),
