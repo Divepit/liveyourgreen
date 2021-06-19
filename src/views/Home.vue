@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import HelloWorld from "@/components/HelloWorld";
+import HelloWorld from "@/components/MainMap";
 export default {
   name: 'Home',
   components: {
