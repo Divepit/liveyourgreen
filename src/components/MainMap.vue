@@ -150,7 +150,10 @@ export default {
       this.currentZoom = zoom;
     },
     apiTest() {
-      axios.get("127.0.0.1:5000/apitest/1/2").then((response) => {
+      var config = {
+        headers: {'Access-Control-Allow-Origin': '*'}
+      };
+      axios.get("https://127.0.0.1:5000/apitest/1/2", config).then((response) => {
         console.log(response.data)
       })
     }
