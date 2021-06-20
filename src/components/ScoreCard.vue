@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" color="grey lighten-4" width="400" height="200">
+  <v-card class="mx-auto" color="grey lighten-4" max-width="600">
     <v-card-title>
       <v-icon v-if="!checking" :color="checking ? 'gray' : 'success'" class="mr-12" size="64">
         mdi-leaf
