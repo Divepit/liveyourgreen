@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app color="success" dark>
       <div class="d-flex align-center">
-        <v-icon x-large class="mr-4">mdi-leaf</v-icon>
+        <v-img width="40" src="@/assets/logo_website.png" class="mr-4"></v-img>
         <span style="font-size: 1.7em" class="font-weight-thin">Live your green</span>
       </div>
     </v-app-bar>

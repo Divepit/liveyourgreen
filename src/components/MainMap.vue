@@ -51,6 +51,7 @@ import { Icon } from 'leaflet';
 import {LControl, LMap, LMarker, LTileLayer} from 'vue2-leaflet';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import VGeosearch from 'vue2-leaflet-geosearch';
+import axios from 'axios'
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
@@ -115,6 +116,7 @@ export default {
   },
   created () {
     this.takePulse(false)
+    this.apiTest()
   },
   methods: {
     addMarker(event) {
@@ -147,6 +149,11 @@ export default {
     zoomUpdate(zoom) {
       this.currentZoom = zoom;
     },
+    apiTest() {
+      axios.get("127.0.0.1:5000/apitest/1/2").then((response) => {
+        console.log(response.data)
+      })
+    }
   },
 };
 </script>
