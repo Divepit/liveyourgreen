@@ -153,7 +153,7 @@ export default {
       var config = {
         headers: {'Access-Control-Allow-Origin': '*'}
       };
-      axios.get("http://127.0.0.1:5000/apitest/1/2", config).then((response) => {
+      axios.get("http://127.0.0.1:5000/apitest/23222.4/54.234199", config).then((response) => {
         console.log(response.data)
       })
     }
