@@ -23,8 +23,8 @@
     </v-card-title>
 
     <v-sheet color="transparent">
-      <v-sparkline :key="String(avg)" :smooth="16" :gradient="['#1feaea', '#ffd200','#f72047']" :line-width="1"
-                   :value="subscores" auto-draw stroke-linecap="round" ></v-sparkline>
+      <v-sparkline v-if="!checking" :key="String(avg)" :smooth="16" :gradient="['#1feaea', '#ffd200','#f72047']" :line-width="1"
+                   :value="subscores" auto-draw stroke-linecap="round"></v-sparkline>
     </v-sheet>
   </v-card>
 </template>

@@ -25,7 +25,7 @@
             class="ma-4"
         >
           <ScoreCard
-              :avg="avg"
+              :avg="result"
               :checking="checking"
               :subscores="subscores"
               :marker="marker"
@@ -101,6 +101,7 @@ export default {
       subscores: [],
       //image overlay
       bounds: [[8.258889841, 8.738077426], [47.235039561, 47.562982412]],
+      result: "-"
     };
   },
   //sparklines
@@ -122,6 +123,7 @@ export default {
     addMarker(event) {
       this.marker = event.latlng;
       this.takePulse()
+      this.apiTest()
     },
     centerUpdate(center) {
       this.currentCenter = center;
@@ -153,8 +155,8 @@ export default {
       var config = {
         headers: {'Access-Control-Allow-Origin': '*'}
       };
-      axios.get("http://185.52.195.231:5000/apitest/23222.4/54.234199", config).then((response) => {
-        console.log(response.data)
+      axios.get(`http://185.52.195.231:5000/apitest/${this.marker.lng}/${this.marker.lat}`, config).then((response) => {
+        this.result = response.data.value
       })
     }
   },
