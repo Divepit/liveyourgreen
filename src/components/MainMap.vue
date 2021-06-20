@@ -100,8 +100,7 @@ export default {
       checking: false,
       subscores: [],
       //image overlay
-      bounds: [[8.258889841, 8.738077426], [47.235039561, 47.562982412]],
-      result: "-"
+      result: "-",
     };
   },
   //sparklines
@@ -113,7 +112,7 @@ export default {
       if (!sum && !length) return 0
 
       return Math.ceil(sum / length)
-    },
+    }
   },
   created () {
     this.takePulse(false)
@@ -156,6 +155,7 @@ export default {
         headers: {'Access-Control-Allow-Origin': '*'}
       };
       axios.get(`http://185.52.195.231:5000/apitest/${this.marker.lng}/${this.marker.lat}`, config).then((response) => {
+        console.log(response)
         this.result = response.data.value
       })
     }
