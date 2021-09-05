@@ -67,7 +67,7 @@ export default {
         searchControl: new GeoSearchControl({
           provider: provider
         }),
-        style: 'bar',
+        //style: 'bar',
         autoClose: true,
         keepResult: true
       },
