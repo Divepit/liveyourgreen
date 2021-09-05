@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <v-app-bar app color="success" dark>
+    <v-app-bar app color="#FBC349" dark>
       <div class="d-flex align-center">
-        <v-img width="40" src="@/assets/logo_website.png" class="mr-4"></v-img>
-        <span style="font-size: 1.7em" class="font-weight-thin">Live your green</span>
+        <v-icon large class="mr-2">mdi-beehive-outline</v-icon>
+        <span style="font-size: 1.7em" class="font-weight-light">Beecon</span>
       </div>
     </v-app-bar>
     <v-main>

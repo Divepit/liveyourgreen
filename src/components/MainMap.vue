@@ -17,6 +17,7 @@
             :attribution="attribution"
         />
         <l-marker
+            v-if="visible"
             :lat-lng="marker"
             @click="removeMarker()">
         </l-marker>
@@ -24,34 +25,22 @@
             :position="'topright'"
             class="ma-4"
         >
-          <ScoreCard
-              :avg="result"
-              :checking="checking"
-              :subscores="subscores"
-              :marker="marker"
-          />
+          <v-btn :color="selectorMode ? '#F8B51E' : ''" class="ma-0 py-6" @click="selectorMode = !selectorMode">
+            <v-icon x-large>mdi-bee-flower</v-icon>
+          </v-btn>
         </l-control>
-        <l-control
-            :position="'topright'"
-            class="ma-4"
-        >
-          <v-geosearch :options="geosearchOptions" @click="this.marker = this.center"></v-geosearch>
-        </l-control>
-        <v-geosearch :options="geosearchOptions" ></v-geosearch>
+        <v-geosearch :options="geosearchOptions" @click="visible = false"></v-geosearch>
       </l-map>
     </div>
   </div>
 </template>
 
 <script>
-//sparkline
-import ScoreCard from "@/components/ScoreCard";
 import {icon, latLng} from 'leaflet';
 import { Icon } from 'leaflet';
 import {LControl, LMap, LMarker, LTileLayer} from 'vue2-leaflet';
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import { OpenStreetMapProvider, GeoSearchControl } from 'leaflet-geosearch';
 import VGeosearch from 'vue2-leaflet-geosearch';
-import axios from 'axios'
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
@@ -59,13 +48,12 @@ Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
-const exhale = ms =>
-    new Promise(resolve => setTimeout(resolve, ms))
+
+const provider = new OpenStreetMapProvider()
 
 export default {
   name: 'Example',
   components: {
-    ScoreCard,
     LMap,
     LTileLayer,
     LMarker,
@@ -75,10 +63,13 @@ export default {
   data() {
     return {
       geosearchOptions: { // Important part Here
-        provider: new OpenStreetMapProvider(),
-        //style: 'bar',
+        provider: provider,
+        searchControl: new GeoSearchControl({
+          provider: provider
+        }),
+        style: 'bar',
         autoClose: true,
-        //keepResult: true
+        keepResult: true
       },
       zoom: 13,
       center: latLng(47.37, 8.54),
@@ -88,7 +79,7 @@ export default {
       currentZoom: 11.5,
       showParagraph: false,
       mapOptions: {
-        zoomSnap: 0.5,
+        zoomSnap: 3.7,
       },
       showMap: true,
       icon: icon({
@@ -96,68 +87,30 @@ export default {
         iconSize: [32, 32],
         iconAnchor: [16, 37]
       }),
-      //sparkline
-      checking: false,
-      subscores: [],
+      visible: true,
+      selectorMode: false
       //image overlay
-      result: "-",
     };
   },
-  //sparklines
-  computed: {
-    avg () {
-      const sum = this.subscores.reduce((acc, cur) => acc + cur, 0)
-      const length = this.subscores.length
-
-      if (!sum && !length) return 0
-
-      return Math.ceil(sum / length)
-    }
-  },
   created () {
-    this.takePulse(false)
-    this.apiTest()
   },
   methods: {
     addMarker(event) {
-      this.marker = event.latlng;
-      this.takePulse()
-      this.apiTest()
+      if (this.selectorMode) {
+        this.visible = true
+        this.marker = event.latlng;
+      }
+      this.selectorMode = false
     },
     centerUpdate(center) {
       this.currentCenter = center;
     },
-    //sparklines
-    subscore () {
-      return Math.ceil(Math.random() * 100)
-    },
-    refillValues() {
-      this.value.from({length: 40}, () => Math.floor(Math.random() * 40));
-    },
     // MARKER CLICK
     removeMarker() {
-      this.marker = this.center;
-    },
-    async takePulse (inhale = true) {
-      this.checking = true
-
-      inhale && await exhale(1000)
-
-      this.subscores = Array.from({ length: 12 }, this.subscore)
-
-      this.checking = false
+      this.visible = false;
     },
     zoomUpdate(zoom) {
       this.currentZoom = zoom;
-    },
-    apiTest() {
-      var config = {
-        headers: {'Access-Control-Allow-Origin': '*'}
-      };
-      axios.get(`http://185.52.195.231:5000/apitest/${this.marker.lng}/${this.marker.lat}`, config).then((response) => {
-        console.log(response)
-        this.result = response.data.value
-      })
     }
   },
 };
